@@ -2,9 +2,9 @@
 <metaInfo flags="138">
 	<exportRoots>
 		<key type='CircuitContainer'>
-			<id field='name' value='Demo'/>
+			<id field='name' value='API Manager Policies'/>
 			<key type='FilterCircuit'>
-				<id field='name' value='Counter'/>
+				<id field='name' value='Create Transaction-ID'/>
 			</key>
 		</key>
 		<key type='ESConfiguration'>
@@ -15,19 +15,18 @@
 		<type name="AddHTTPHeaderFilter" version="5"/>
 		<type name="AttributeExtractHTTPHeaderFilter" version="0"/>
 		<type name="CircuitContainer" version="1"/>
-		<type name="CreateMessageKeyFilter" version="1"/>
-		<type name="ESConfiguration" version="31"/>
+		<type name="ESConfiguration" version="30"/>
 		<type name="Entity" version="0"/>
 		<type name="Filter" version="5"/>
 		<type name="FilterCircuit" version="4"/>
+		<type name="JavaScriptFilter" version="3"/>
 		<type name="RootChild" version="0"/>
-		<type name="TraceFilter" version="3"/>
 	</typeVersions>
 	<realizedTypes><![CDATA[
 <entityStoreData>
 <entityType xmlns="http://www.vordel.com/2005/06/24/entityStore" abstract="true" extends="Entity" name="RootChild"/>
 <entityType xmlns="http://www.vordel.com/2005/06/24/entityStore" extends="RootChild" name="ESConfiguration">
-        <constant name="_version" type="integer" value="31"/>
+        <constant name="_version" type="integer" value="30"/>
         <!--
             Give this singleton a key.
         -->
@@ -42,11 +41,6 @@
         <!-- The product key should never change for the lifetime of the product -->
         <field name="productKey" type="string"/>
         <field cardinality="?" name="gitrev" type="string"/>
-        <!-- This is contains the extended product version, like 7.7.20200730.
-             The values is the same has in:
-             com.vordel.version.ProductVersion.getLabel
-         -->
-        <field cardinality="?" name="extendedVersion" type="string"/>
     </entityType>
 <entityType xmlns="http://www.vordel.com/2005/06/24/entityStore" extends="RootChild" name="CircuitContainer">
     <constant name="_version" type="integer" value="1"/>
@@ -109,12 +103,6 @@
         <field cardinality="1" default="1" name="overwriteExistingHeader" type="boolean"/>
         <field cardinality="1" default="httpheaders" name="addWhere" type="string"/>
         </entityType>
-<entityType xmlns="http://www.vordel.com/2005/06/24/entityStore" extends="Filter" name="CreateMessageKeyFilter">
-        <constant name="_version" type="integer" value="1"/>	    
-	    <constant name="class" type="string" value="com.vordel.circuit.cache.CreateMessageKeyFilter"/>
-	    <field cardinality="1" default="content.body" name="uniqueAttributeName" type="string"/>
-	    <field cardinality="1" default="message.key" name="outputAttributeName" type="string"/>
-	</entityType>
 <entityType xmlns="http://www.vordel.com/2005/06/24/entityStore" extends="Filter" name="AttributeExtractHTTPHeaderFilter">
         <constant name="_version" type="integer" value="0"/>
     <constant name="class" type="string" value="com.vordel.circuit.attribute.AttributeExtractHTTPHeaderFilter"/>
@@ -134,21 +122,21 @@
       </defaultRef>
     </field>    
   </entityType>
-<entityType xmlns="http://www.vordel.com/2005/06/24/entityStore" extends="Filter" name="TraceFilter">
+<entityType xmlns="http://www.vordel.com/2005/06/24/entityStore" extends="Filter" name="JavaScriptFilter">
         <constant name="_version" type="integer" value="3"/>
-		    <constant name="class" type="string" value="com.vordel.circuit.basic.TraceFilter"/>
-        <field cardinality="?" name="traceMsg" type="string"/>
-        <field cardinality="1" default="5" name="traceLevel" type="integer"/>
-        <field cardinality="1" default="1" name="traceAttributes" type="boolean"/>
-        <field cardinality="1" default="0" name="traceBody" type="boolean"/>
-        <field cardinality="1" default="0" name="doIndent" type="boolean"/>
-    </entityType>
+	<constant name="class" type="string" value="com.vordel.circuit.script.ScriptFilter"/>
+	<field cardinality="1" default="function invoke(msg)         {            return true;         }" name="script" type="string"/>
+	<field cardinality="1" default="nashorn" name="engineName" type="string"/>
+        <field cardinality="*" name="requiredProperties" type="string"/>
+        <field cardinality="*" name="generatedProperties" type="string"/>
+        <field cardinality="*" name="consumedProperties" type="string"/>
+	</entityType>
 </entityStoreData>
 	]]></realizedTypes>
 </metaInfo>
 <entity xmlns="http://www.vordel.com/2005/06/24/entityStore"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="FilterCircuit">
 	<key type='CircuitContainer'>
-		<id field='name' value='Demo'/>
+		<id field='name' value='API Manager Policies'/>
 	</key>
 	<fval name="category"><value contentType="reference">
 		<key type='PolicyCategoryGroup'>
@@ -160,60 +148,24 @@
 	</value></fval>
 	<fval name="description"><value></value></fval>
 	<fval name="logMask"><value>3</value></fval>
-	<fval name="name"><value>Counter</value></fval>
+	<fval name="name"><value>Create Transaction-ID</value></fval>
 	<fval name="start"><value contentType="reference">
 		<key type='CircuitContainer'>
-			<id field='name' value='Demo'/>
+			<id field='name' value='API Manager Policies'/>
 			<key type='FilterCircuit'>
-				<id field='name' value='Counter'/>
+				<id field='name' value='Create Transaction-ID'/>
 				<key type='AttributeExtractHTTPHeaderFilter'>
-					<id field='name' value='Retrieve from HTTP header'/>
+					<id field='name' value='Get X-TransactionID'/>
 				</key>
 			</key>
 		</key>
 	</value></fval>
-</entity>
-<entity xmlns="http://www.vordel.com/2005/06/24/entityStore"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="CreateMessageKeyFilter">
-	<key type='CircuitContainer'>
-		<id field='name' value='Demo'/>
-		<key type='FilterCircuit'>
-			<id field='name' value='Counter'/>
-		</key>
-	</key>
-	<fval name="abortProcessingOnLogError"><value>0</value></fval>
-	<fval name="category"><value contentType="reference">
-		<key type='CategoryGroup'>
-			<id field='name' value='Filter Categories'/>
-			<key type='Category'>
-				<id field='name' value='miscellaneous'/>
-			</key>
-		</key>
-	</value></fval>
-	<fval name="logFailure"><value>Failure during creationo of message key from attribute.</value></fval>
-	<fval name="logFatal"><value>Error during message creation of message key from attribute. Error: ${circuit.exception}</value></fval>
-	<fval name="logMask"><value>2</value></fval>
-	<fval name="logMaskType"><value>SERVICE</value></fval>
-	<fval name="logSuccess"><value>Message key created from attribute.</value></fval>
-	<fval name="name"><value>Create GUID</value></fval>
-	<fval name="outputAttributeName"><value>transaction.id</value></fval>
-	<fval name="successNode"><value contentType="reference">
-		<key type='CircuitContainer'>
-			<id field='name' value='Demo'/>
-			<key type='FilterCircuit'>
-				<id field='name' value='Counter'/>
-				<key type='AddHTTPHeaderFilter'>
-					<id field='name' value='Add HTTP Header'/>
-				</key>
-			</key>
-		</key>
-	</value></fval>
-	<fval name="uniqueAttributeName"><value>id</value></fval>
 </entity>
 <entity xmlns="http://www.vordel.com/2005/06/24/entityStore"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="AttributeExtractHTTPHeaderFilter">
 	<key type='CircuitContainer'>
-		<id field='name' value='Demo'/>
+		<id field='name' value='API Manager Policies'/>
 		<key type='FilterCircuit'>
-			<id field='name' value='Counter'/>
+			<id field='name' value='Create Transaction-ID'/>
 		</key>
 	</key>
 	<fval name="abortProcessingOnLogError"><value>0</value></fval>
@@ -229,40 +181,29 @@
 	</value></fval>
 	<fval name="failureNode"><value contentType="reference">
 		<key type='CircuitContainer'>
-			<id field='name' value='Demo'/>
+			<id field='name' value='API Manager Policies'/>
 			<key type='FilterCircuit'>
-				<id field='name' value='Counter'/>
-				<key type='CreateMessageKeyFilter'>
-					<id field='name' value='Create GUID'/>
+				<id field='name' value='Create Transaction-ID'/>
+				<key type='JavaScriptFilter'>
+					<id field='name' value='Create Transaction-ID'/>
 				</key>
 			</key>
 		</key>
 	</value></fval>
 	<fval name="headerName"><value>X-TransactionID</value></fval>
-	<fval name="logFailure"><value>Failed to extract attribute HTTP header</value></fval>
+	<fval name="logFailure"><value>Creating new Transaction-ID</value></fval>
 	<fval name="logFatal"><value>Error occurred while extracting attributes from HTTP header. Error: ${circuit.exception}</value></fval>
-	<fval name="logMask"><value>2</value></fval>
-	<fval name="logMaskType"><value>SERVICE</value></fval>
-	<fval name="logSuccess"><value>Extracted attribute from HTTP header</value></fval>
-	<fval name="name"><value>Retrieve from HTTP header</value></fval>
-	<fval name="successNode"><value contentType="reference">
-		<key type='CircuitContainer'>
-			<id field='name' value='Demo'/>
-			<key type='FilterCircuit'>
-				<id field='name' value='Counter'/>
-				<key type='TraceFilter'>
-					<id field='name' value='Trace Filter'/>
-				</key>
-			</key>
-		</key>
-	</value></fval>
+	<fval name="logMask"><value>6</value></fval>
+	<fval name="logMaskType"><value>FILTER</value></fval>
+	<fval name="logSuccess"><value>Re-Use existing Transaction-ID</value></fval>
+	<fval name="name"><value>Get X-TransactionID</value></fval>
 	<fval name="useQueryParameter"><value>0</value></fval>
 </entity>
-<entity xmlns="http://www.vordel.com/2005/06/24/entityStore"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="TraceFilter">
+<entity xmlns="http://www.vordel.com/2005/06/24/entityStore"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="JavaScriptFilter">
 	<key type='CircuitContainer'>
-		<id field='name' value='Demo'/>
+		<id field='name' value='API Manager Policies'/>
 		<key type='FilterCircuit'>
-			<id field='name' value='Counter'/>
+			<id field='name' value='Create Transaction-ID'/>
 		</key>
 	</key>
 	<fval name="abortProcessingOnLogError"><value>0</value></fval>
@@ -274,23 +215,34 @@
 			</key>
 		</key>
 	</value></fval>
-	<fval name="doIndent"><value>0</value></fval>
-	<fval name="logFailure"><value>Failed to trace the message properties</value></fval>
-	<fval name="logFatal"><value>Error while tracing the message properties. Error: ${circuit.exception}</value></fval>
+	<fval name="consumedProperties"></fval>
+	<fval name="engineName"><value>nashorn</value></fval>
+	<fval name="generatedProperties"><value>transaction.id</value></fval>
+	<fval name="logFailure"><value>Failed script filter</value></fval>
+	<fval name="logFatal"><value>Error while attempt to run script filter. Error: ${circuit.exception}</value></fval>
 	<fval name="logMask"><value>2</value></fval>
 	<fval name="logMaskType"><value>SERVICE</value></fval>
-	<fval name="logSuccess"><value>Traced the message properties</value></fval>
-	<fval name="name"><value>Trace Filter</value></fval>
-	<fval name="traceAttributes"><value>1</value></fval>
-	<fval name="traceBody"><value>0</value></fval>
-	<fval name="traceLevel"><value>3</value></fval>
-	<fval name="traceMsg"><value>counter</value></fval>
+	<fval name="logSuccess"><value>Passed script filter</value></fval>
+	<fval name="name"><value>Create Transaction-ID</value></fval>
+	<fval name="requiredProperties"></fval>
+	<fval name="script"><value>var imp = new JavaImporter(java.util, java.math);&#xA;with(imp) {&#xA;&#x9;function invoke(msg) {&#xA;&#x9;&#x9;// Transaction-ID must be numeric&#xA;&#x9;&#x9;var transactionId = java.lang.String.format(&quot;%040d&quot;, new BigInteger(UUID.randomUUID().toString().replaceAll(&quot;-&quot;, &quot;&quot;), 16) );&#xA;&#x9;&#x9;msg.put(&quot;transaction.id&quot;, transactionId);&#xA;&#x9;&#x9;return true;&#xA;&#x9;}&#xA;};</value></fval>
+	<fval name="successNode"><value contentType="reference">
+		<key type='CircuitContainer'>
+			<id field='name' value='API Manager Policies'/>
+			<key type='FilterCircuit'>
+				<id field='name' value='Create Transaction-ID'/>
+				<key type='AddHTTPHeaderFilter'>
+					<id field='name' value='Add X-TransactionID HTTP Header'/>
+				</key>
+			</key>
+		</key>
+	</value></fval>
 </entity>
 <entity xmlns="http://www.vordel.com/2005/06/24/entityStore"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="AddHTTPHeaderFilter">
 	<key type='CircuitContainer'>
-		<id field='name' value='Demo'/>
+		<id field='name' value='API Manager Policies'/>
 		<key type='FilterCircuit'>
-			<id field='name' value='Counter'/>
+			<id field='name' value='Create Transaction-ID'/>
 		</key>
 	</key>
 	<fval name="abortProcessingOnLogError"><value>0</value></fval>
@@ -311,25 +263,13 @@
 	<fval name="logMask"><value>2</value></fval>
 	<fval name="logMaskType"><value>SERVICE</value></fval>
 	<fval name="logSuccess"><value>Success in adding the HTTP header to the message</value></fval>
-	<fval name="name"><value>Add HTTP Header</value></fval>
-	<fval name="overwriteExistingHeader"><value>0</value></fval>
-	<fval name="successNode"><value contentType="reference">
-		<key type='CircuitContainer'>
-			<id field='name' value='Demo'/>
-			<key type='FilterCircuit'>
-				<id field='name' value='Counter'/>
-				<key type='TraceFilter'>
-					<id field='name' value='Trace Filter'/>
-				</key>
-			</key>
-		</key>
-	</value></fval>
+	<fval name="name"><value>Add X-TransactionID HTTP Header</value></fval>
+	<fval name="overwriteExistingHeader"><value>1</value></fval>
 </entity>
 <entity xmlns="http://www.vordel.com/2005/06/24/entityStore"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="CircuitContainer">
-	<fval name="name"><value>Demo</value></fval>
+	<fval name="name"><value>API Manager Policies</value></fval>
 </entity>
 <entity xmlns="http://www.vordel.com/2005/06/24/entityStore"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="ESConfiguration">
-	<fval name="extendedVersion"><value>7.7.20200930</value></fval>
 	<fval name="name"><value>Entity Store Configuration</value></fval>
 	<fval name="passphraseTest"><value>aHR0cDsvL3d3dy52b3JkZWwuY29t</value></fval>
 	<fval name="productKey"><value>VordelGateway</value></fval>
