@@ -12,7 +12,7 @@ In order for a transaction to be recognized across multiple requests, the genera
 
 1. Import the Policy-Fragment
 
-Import the policy fragment into your group policy configuration. It has version 7.7.0 and with that it can be imported in any later release. You will get the following new policy: `API Manager Policies/Create Transaction-ID`
+Import the [policy fragment](TransactionPolicy.xml) into your group policy configuration. It has version 7.7.0 and with that it can be imported in any later release. You will get the following new policy: `API Manager Policies/Create Transaction-ID`
 
 2. Register as Global-Request Policy
 
