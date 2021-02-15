@@ -169,7 +169,7 @@
 		</key>
 	</key>
 	<fval name="abortProcessingOnLogError"><value>0</value></fval>
-	<fval name="attributeName"><value>transaction.id</value></fval>
+	<fval name="attributeName"><value>transactionId</value></fval>
 	<fval name="base64Decode"><value>0</value></fval>
 	<fval name="category"><value contentType="reference">
 		<key type='CategoryGroup'>
@@ -217,7 +217,7 @@
 	</value></fval>
 	<fval name="consumedProperties"></fval>
 	<fval name="engineName"><value>nashorn</value></fval>
-	<fval name="generatedProperties"><value>transaction.id</value></fval>
+	<fval name="generatedProperties"><value>transactionId</value></fval>
 	<fval name="logFailure"><value>Failed script filter</value></fval>
 	<fval name="logFatal"><value>Error while attempt to run script filter. Error: ${circuit.exception}</value></fval>
 	<fval name="logMask"><value>2</value></fval>
@@ -225,7 +225,7 @@
 	<fval name="logSuccess"><value>Passed script filter</value></fval>
 	<fval name="name"><value>Create Transaction-ID</value></fval>
 	<fval name="requiredProperties"></fval>
-	<fval name="script"><value>var imp = new JavaImporter(java.util, java.math);&#xA;with(imp) {&#xA;&#x9;function invoke(msg) {&#xA;&#x9;&#x9;// Transaction-ID must be numeric&#xA;&#x9;&#x9;var transactionId = java.lang.String.format(&quot;%040d&quot;, new BigInteger(UUID.randomUUID().toString().replaceAll(&quot;-&quot;, &quot;&quot;), 16) );&#xA;&#x9;&#x9;msg.put(&quot;transaction.id&quot;, transactionId);&#xA;&#x9;&#x9;return true;&#xA;&#x9;}&#xA;};</value></fval>
+	<fval name="script"><value>var imp = new JavaImporter(java.util, java.math);&#xA;with(imp) {&#xA;&#x9;function invoke(msg) {&#xA;&#x9;&#x9;// Transaction-ID must be numeric&#xA;&#x9;&#x9;var transactionId = java.lang.String.format(&quot;%040d&quot;, new BigInteger(UUID.randomUUID().toString().replaceAll(&quot;-&quot;, &quot;&quot;), 16) );&#xA;&#x9;&#x9;msg.put(&quot;transactionId&quot;, transactionId);&#xA;&#x9;&#x9;return true;&#xA;&#x9;}&#xA;};</value></fval>
 	<fval name="successNode"><value contentType="reference">
 		<key type='CircuitContainer'>
 			<id field='name' value='API Manager Policies'/>
@@ -257,7 +257,7 @@
 		</key>
 	</value></fval>
 	<fval name="headerName"><value>X-TransactionID</value></fval>
-	<fval name="headerValue"><value>${transaction.id}</value></fval>
+	<fval name="headerValue"><value>${transactionId}</value></fval>
 	<fval name="logFailure"><value>Failed in adding the HTTP header to the message</value></fval>
 	<fval name="logFatal"><value>Error in adding the HTTP header to the message. Error: ${circuit.exception}</value></fval>
 	<fval name="logMask"><value>2</value></fval>
