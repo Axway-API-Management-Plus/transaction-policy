@@ -44,7 +44,7 @@ The Transaction-ID will become part of the Event-File:
     }
   ],
   "customMsgAtts": {
-    "transactionId": "0304658874022716452437861102867924833543"
+    "transactionId": "w3btDF7a+p+6mZCA0Q86WRghf54="
   },
   "correlationId": "fcef2a6002c28f824afb698c",
   "legs": [
@@ -53,19 +53,4 @@ The Transaction-ID will become part of the Event-File:
     }
   ]
 }
-```
-
-## Reference / Development
-
-The Javascript code used in the policy:
-```javascript
-var imp = new JavaImporter(java.util, java.math);
-with(imp) {
-	function invoke(msg) {
-		// Transaction-ID must be numeric
-		var transactionId = java.lang.String.format("%040d", new BigInteger(UUID.randomUUID().toString().replaceAll("-", ""), 16) );
-		msg.put("transactionId", transactionId);
-		return true;
-	}
-};
 ```
